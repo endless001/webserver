@@ -2,13 +2,78 @@ kind: pipeline
 type: docker
 name: default
 
-server:
-  host: 1.2.3.4
-  user: root
-  password: correct-horse-battery-staple
 
 steps:
 - name: build
+  image: mcr.microsoft.com/dotnet/sdk:5.0
   commands:
-  - go build
-  - go test
+    - dotnet build
+
+- name: test
+  image: mcr.microsoft.com/dotnet/sdk:5.0
+  commands:
+    - dotnet test
+ 
+- name: publish
+  image: docker/compose
+  environment:
+    DOCKER_USERNAME:
+      from_secret: docker_username
+    DOCKER_PASSWORD:
+      from_secret: docker_password
+  commands:
+    - docker-compose -f docker-compose.yml  build
+    - docker login inendless.azurecr.io -u $DOCKER_USERNAME  -p $DOCKER_PASSWORD
+    - docker-compose push
+  volumes:
+    - name: docker_socket
+      path: /var/run/docker.sock
+
+- name: deploy
+  image: appleboy/drone-ssh
+  settings:
+    host: 172.27.219.233
+    username: vagrant
+    password: vagrant
+    port: 22
+    script:
+      - cd ~/deploy/dotnet-logging
+      - sudo docker-compose up -d
+
+volumes:
+    - name: docker_socket
+      host:
+        path: /var/run/docker.sock
+
+image_pull_secrets:
+    - dockerconfigjson
+
+---
+kind: pipeline
+type: docker
+name: notify
+
+clone:
+  disable: true
+
+steps:
+  - name: notify
+    image: drillster/drone-email
+    settings:
+      recipients_only: true
+      recipients:
+        - 1319822160@qq.com
+      subject: "Drone build: [{{ build.status }}] {{ repo.name }} ({{ repo.branch }}) #{{ build.number }}"
+      host: smtp.163.com
+      port: 25
+      from: 15717151224@163.com
+      username:
+        from_secret: email_username
+      password:
+        from_secret: email_password
+     
+trigger:
+  status: [success, failure]
+
+depends_on: [default]
+
