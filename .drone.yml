@@ -1,13 +1,15 @@
 kind: pipeline
-type: ssh
+type: docker
 name: default
 
-server:
-  host: 172.27.219.233
-  user: vagrant
-  password: vagrant
-
-steps:
-- name: greeting
-  commands:
-  - mkidr  lqssh
+- name: deploy
+  image: appleboy/drone-ssh
+  settings:
+    host: 172.27.219.233
+    username: vagrant
+    password: vagrant
+    port: 22
+    script:
+     - echo lq
+     - git fetch --tags
+     
