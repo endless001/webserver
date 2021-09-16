@@ -10,7 +10,7 @@ steps:
     - cargo build
   volumes:
     - name: data
-      path: /home
+      path: /drone/src
 
 - name: deploy
   image: appleboy/drone-ssh
@@ -21,7 +21,7 @@ steps:
     port: 22
     script:
      - echo lq
-     
+
 volumes:
     - name: data
       host:
