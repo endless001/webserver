@@ -8,7 +8,7 @@ steps:
   image: rust
   commands:
     - cargo build
-    - cp target/* /drone
+    - cp target/debug/* /drone
   volumes:
     - name: data
       path: /drone
