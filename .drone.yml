@@ -1,5 +1,5 @@
 kind: pipeline
-type: dcoker
+type: docker
 name: default
 
 
@@ -47,6 +47,7 @@ volumes:
 
 image_pull_secrets:
     - dockerconfigjson
+
 
 ---
 kind: pipeline
