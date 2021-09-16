@@ -1,4 +1,3 @@
----
 kind: pipeline
 type: ssh
 name: default
@@ -9,7 +8,10 @@ server:
   password:
     from_secret: password
 
-steps:
-- name: greeting
+clone:
+  depth: 50
+
+- name: build
   commands:
-  - echo hello world
+  - go build
+  - go test
