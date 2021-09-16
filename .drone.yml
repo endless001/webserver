@@ -10,7 +10,7 @@ steps:
     - cargo build
   volumes:
     - name: data
-        path: /drone
+      path:   /home
 
 - name: deploy
   image: appleboy/drone-ssh
@@ -23,6 +23,6 @@ steps:
      - echo lq
 
 volumes:
- - name: data
-    host:
-      path: /home/vagrant/deploy/webserver
+    - name: data
+      host:
+        path: /home/vagrant/deploy/webserver
