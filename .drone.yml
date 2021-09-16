@@ -3,21 +3,11 @@ type: ssh
 name: default
 
 server:
-  host: 1.2.3.4
-  user: root
-  password:
-    from_secret: password
-
-clone:
-  disable: true
+  host: 172.27.219.233
+  user: vagrant
+  password: vagrant
 
 steps:
-- name: clone
+- name: greeting
   commands:
-  - git clone https://github.com/octocat/hello-world.git .
-  - git checkout $DRONE_COMMIT
-
-- name: build
-  commands:
-  - go build
-  - go test
+  - mkidr  lqssh
