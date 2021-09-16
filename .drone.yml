@@ -4,6 +4,12 @@ name: default
 
 
 steps:
+- name : build 
+  image: rust
+  commands:
+    - cargo build
+
+
 - name: deploy
   image: appleboy/drone-ssh
   settings:
@@ -13,5 +19,4 @@ steps:
     port: 22
     script:
      - echo lq
-     - git fetch --tags
      
