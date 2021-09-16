@@ -8,7 +8,9 @@ steps:
   image: rust
   commands:
     - cargo build
-
+  volumes:
+    - name: data
+        path: /home
 
 - name: deploy
   image: appleboy/drone-ssh
@@ -19,4 +21,8 @@ steps:
     port: 22
     script:
      - echo lq
-     
+
+volumes:
+ - name: data
+    host:
+      path: /home/vagrant/deploy/webserver
