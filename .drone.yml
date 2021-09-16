@@ -9,7 +9,13 @@ server:
     from_secret: password
 
 clone:
-  depth: 50
+  disable: true
+
+steps:
+- name: clone
+  commands:
+  - git clone https://github.com/octocat/hello-world.git .
+  - git checkout $DRONE_COMMIT
 
 - name: build
   commands:
