@@ -10,7 +10,7 @@ steps:
     - cargo build
   volumes:
     - name: data
-      path: /drone/src
+      path: /drone
 
 - name: deploy
   image: appleboy/drone-ssh
